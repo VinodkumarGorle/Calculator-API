@@ -8,7 +8,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins (change in production)
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -17,24 +17,27 @@ app.add_middleware(
 class Operation(BaseModel):
     num1: float
     num2: float
-    process: str  # "add" or "sub"
+    process: str 
+
 def success_response(key: str, value: float):
     return {
         "Status": [{"MessageCode": "S", "MessageText": "OK"}],
-        "ReturnData": [{key: value}]
+        "ReturnData": [{key: value}],
+        "DevelopedBy": "Vinod Kumar"
     }
 
-# Validation
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     return JSONResponse(
         status_code=422,
         content={
             "Status": [{"MessageCode": "E", "MessageText": "Error"}],
-            "ReturnData": [{"Invalid input format. num1 and num2 must be numbers."}]
+            "ReturnData": [{"Message": "Invalid input format. num1 and num2 must be numbers."}],
+            "DevelopedBy ": "Vinod Kumar"
         },
     )
 
+# Main 
 @app.post("/calculate")
 def calculate(op: Operation):
     if op.process == "add":
@@ -46,5 +49,6 @@ def calculate(op: Operation):
     else:
         return {
             "Status": [{"MessageCode": "E", "MessageText": "Invalid process type. Use 'add' or 'sub'."}],
-            "ReturnData": []
+            "ReturnData": [],
+            "DevelopedBy ": "Vinod Kumar"
         }
