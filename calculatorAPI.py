@@ -4,10 +4,9 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-# Enable CORS for frontend access
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace with specific origin in production
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -19,7 +18,7 @@ class Operation(BaseModel):
     num2: float
     process: str  # "add" or "sub"
 
-# Response structure helper
+# Response structure 
 def success_response(key: str, value: float):
     return {
         "Status": [
